@@ -1,0 +1,40 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  mvc:
+    async:
+      request-timeout: 300000
+  application:
+    name: ai-mcp-client
+  main:
+    banner-mode: off
+  ai:
+    chat:
+      observations:
+        log-prompt: true
+        log-completion: true
+    mcp:
+      client:
+        enabled: true
+        name: ai-mcp-client
+        version: 1.0.0
+        request-timeout: 30s
+        type: SYNC  # or ASYNC for reacti
+        streamable-http:
+          connections:
+            server1:
+              url: http://localhost:3001
+              endpoint: /mcp
+
+aws:
+  region: eu-west-1
+  access-key-id:
+  secret-access-key:
+
+logging:
+  level:
+    io.modelcontextprotocol.client: WARN
+    io.modelcontextprotocol.spec: WARN
+    org.springframework.security: TRACE
+    org.springframework.security.oauth2: TRACE
