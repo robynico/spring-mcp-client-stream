@@ -82,6 +82,27 @@ class ChatControllerIntegrationTest {
 		assertNotNull(response.body());
 	}
 
+	@Test
+	void testMultipleTenantIterations() throws Exception {
+		String[] tenants = {"A", "B", "C", "D", "E", "F"};
+		String[] prompts = {"add 2 + 3", "multiply 4 * 5", "subtract 10 - 3"};
+		int iterations = 3;
+		ExecutorService executor = Executors.newFixedThreadPool(10);
+
+		int i = 0;
+		while (i < iterations) {
+			CompletableFuture<Void>[] futures = new CompletableFuture[tenants.length];
+			for (int j = 0; j < tenants.length; j++) {
+				final int index = j;
+				futures[j] = CompletableFuture.runAsync(() -> 
+					testTenantRequest(tenants[index], prompts[index % prompts.length]), executor);
+			}
+			CompletableFuture.allOf(futures).get();
+			i++;
+		}
+		executor.shutdown();
+	}
+
 	private void testTenantRequest(String tenant, String prompt) {
 		try {
 			ChatRequest request = new ChatRequest(prompt);
