@@ -22,7 +22,7 @@ aws configure
 curl -X POST http://localhost:8080/stream-chat \
 -H "Content-Type: application/json" \
 -H "Tenant: A " \
--d '{"prompt": "list the tools"}'
+-d '{"prompt": "add 2 + 3"}'
 ```
 
 ## 3 Run stream chat with tool call

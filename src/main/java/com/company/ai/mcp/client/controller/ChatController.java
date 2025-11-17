@@ -36,9 +36,12 @@ public class ChatController {
 	}
 
 	@PostMapping(value = "/stream-chat")
-	public Flux<String> streamChat(@RequestBody @Valid ChatRequest request, @Headers HttpHeaders headers) {
+	public Flux<String> streamChat(@RequestBody @Valid ChatRequest request, @Headers HttpHeaders headers,
+			jakarta.servlet.http.HttpServletResponse response) {
 		var requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-		logger.info("Tenant {}", requestAttributes.getRequest().getHeader(HTTP_HEADER_TENANT));
+		String tenant = requestAttributes.getRequest().getHeader(HTTP_HEADER_TENANT);
+		logger.info("Tenant {}", tenant);
+		response.setHeader(HTTP_HEADER_TENANT, tenant);
 		return agentService.streamChat(request.getPrompt());
 	}
 

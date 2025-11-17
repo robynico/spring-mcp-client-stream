@@ -13,7 +13,6 @@ import java.util.Map;
 
 import static com.company.ai.mcp.client.controller.ChatController.HTTP_HEADER_TENANT;
 
-
 class CustomMcpSyncRequestCustomizer implements McpSyncHttpClientRequestCustomizer {
 
 	private static final Logger logger = LoggerFactory.getLogger(CustomMcpSyncRequestCustomizer.class);

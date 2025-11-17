@@ -1,5 +1,6 @@
 package com.company.ai.mcp.client.agent;
 
+import com.company.ai.mcp.client.config.AuthenticationMcpTransportContextProvider;
 import org.springframework.ai.bedrock.converse.BedrockChatOptions;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.tool.ToolCallbackProvider;
@@ -22,7 +23,11 @@ public class AgentService {
 	}
 
 	public Flux<String> streamChat(String prompt) {
-		return chatClient.prompt().user(userMessage -> userMessage.text(prompt)).stream().content();
+		return chatClient.prompt()
+			.user(userMessage -> userMessage.text(prompt))
+			.stream()
+			.content()
+			.contextWrite(AuthenticationMcpTransportContextProvider.writeToReactorContext());
 	}
 
 	public String chat(String prompt) {
